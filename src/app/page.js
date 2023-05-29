@@ -1,95 +1,130 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client';
 
-export default function Home() {
+import * as React from 'react';
+import Form from 'react-bootstrap/Form';
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import FontSelector from './FontSelector';
+import Letter from './Letter';
+import styles from './page.module.css';
+import fin from '../../public/end.png';
+
+export default function Tiff() {
+  const [fontA, setFontA] = React.useState('Inter');
+  const [fontB, setFontB] = React.useState('');
+  const [letters, setLetters] = React.useState(['R', 'g', 'h', 'e']);
+
+  React.useEffect(() => {
+    (async () => {
+      const WebFont = (await import('webfontloader')).default;
+      WebFont.load({
+        google: {
+          families: [fontA, fontB],
+        },
+      });
+    })();
+  }, [fontA, fontB]);
+
+  const handleEdit = (index, event) => {
+    const newLetters = letters.slice();
+    newLetters[index] = event.target.value;
+    setLetters(newLetters);
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <React.Fragment>
+      <Head>
+        <title>Tiff - A type diff tool</title>
+      </Head>
+      <aside className={styles.ribbon}>
+        <div className={styles.content}>
+          <h1>Tiff</h1>
+          <section>
+            <p className={styles.subtitle}>
+              A type diff tool that visually contrasts the differences between
+              two fonts.
+            </p>
+            <p className={styles.disclaimer}>
+              Currently supports fonts from the&nbsp;
+              <Link href="https://www.google.com/fonts">Google Web Fonts</Link>
+              &nbsp; library and any system fonts. Best if viewed on the latest
+              version of modern browsers.
+            </p>
+          </section>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      </aside>
+      <main className={styles.primary}>
+        <div className={styles.content}>
+          <section className={styles.fontSelect}>
+            <FontSelector
+              autoFocus={false}
+              defaultValue="Inter"
+              label="Font A"
+              className={styles.fontA}
+              handleSelect={(value) => setFontA(value)}
+            />
+            <FontSelector
+              autoFocus={true}
+              label="Font B"
+              className={styles.fontB}
+              handleSelect={(value) => setFontB(value)}
+            />
+          </section>
+          <section className={styles.fontDisplay}>
+            <Letter value={letters[0]} fontA={fontA} fontB={fontB} />
+            <Letter value={letters[1]} fontA={fontA} fontB={fontB} />
+            <Letter value={letters[2]} fontA={fontA} fontB={fontB} />
+            <Letter value={letters[3]} fontA={fontA} fontB={fontB} />
+          </section>
+          {/* <section className={styles.displayMode}>
+            <Form.Switch />
+          </section> */}
+          <section className={styles.displayControl}>
+            <p>Edit to see different letters</p>
+            <div className={styles.testLetters}>
+              <input
+                className={styles.testLetter}
+                maxLength={1}
+                value={letters[0]}
+                onChange={(e) => handleEdit(0, e)}
+              ></input>
+              <input
+                className={styles.testLetter}
+                maxLength={1}
+                value={letters[1]}
+                onChange={(e) => handleEdit(1, e)}
+              ></input>
+              <input
+                className={styles.testLetter}
+                maxLength={1}
+                value={letters[2]}
+                onChange={(e) => handleEdit(2, e)}
+              ></input>
+              <input
+                className={styles.testLetter}
+                maxLength={1}
+                value={letters[3]}
+                onChange={(e) => handleEdit(3, e)}
+              ></input>
+            </div>
+            <p>
+              or{' '}
+              <span
+                className={styles.reset}
+                onClick={() => setLetters(['R', 'g', 'h', 'e'])}
+              >
+                reset
+              </span>{' '}
+              to default
+            </p>
+          </section>
+          <section className={styles.footer}>
+            <Image src={fin} alt="end of content" />
+          </section>
+        </div>
+      </main>
+    </React.Fragment>
+  );
 }

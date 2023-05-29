@@ -1,0 +1,15 @@
+.wrapper {
+  height: 1.5em;
+  position: relative;
+  border: 1px solid #BBB;
+  font-size: 120px;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.font {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  opacity: 0.5;
+}

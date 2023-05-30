@@ -5,7 +5,7 @@ fonts. I had the idea of creating such a tool to help me compare two fonts while
 learning about typography.
 
 The app is currently running at [https://winniethemu.github.io/tiff](https://winniethemu.github.io/tiff)
-<img width="842" alt="App Screen Shot" src="https://user-images.githubusercontent.com/728719/168442911-f0ea81ec-7ba5-4e31-b8e4-67a7e3d8e3c7.png">
+<img width="864" alt="App Screen Shot" src="https://github.com/winniethemu/tiff/assets/728719/5b0fb018-6947-4a51-97f3-36502250d08a">
 
 ### Fonts
 
